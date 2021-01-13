@@ -15,9 +15,8 @@ import java.util.ArrayList;
 
 public class EventJsonUDTF extends GenericUDTF {
 
-    //在该方法中，我们将指定输出参数的名称和参数类型
-    @Override
-    public StructObjectInspector initialize(ObjectInspector[] argOIs) throws UDFArgumentException {
+    //该方法中，我们将指定输出参数的名称和参数类型：
+    public StructObjectInspector initialize(StructObjectInspector argOIs) throws UDFArgumentException {
 
         ArrayList<String> fieldNames = new ArrayList<String>();
         ArrayList<ObjectInspector> fieldOIs = new ArrayList<ObjectInspector>();
@@ -37,13 +36,13 @@ public class EventJsonUDTF extends GenericUDTF {
         // 获取传入的et
         String input = objects[0].toString();
 
-        // 如果传进来的数据为空，则直接返回，过滤掉该数据
+        // 如果传进来的数据为空，直接返回过滤掉该数据
         if (StringUtils.isBlank(input)) {
             return;
         } else {
 
             try {
-                // 获取事件的个数（ad/facoriters）
+                // 获取一共有几个事件（ad/facoriters）
                 JSONArray ja = new JSONArray(input);
 
                 if (ja == null)
@@ -54,7 +53,7 @@ public class EventJsonUDTF extends GenericUDTF {
                     String[] result = new String[2];
 
                     try {
-                        // 取出每个事件的名称（ad/facoriters）
+                        // 取出每个的事件名称（ad/facoriters）
                         result[0] = ja.getJSONObject(i).getString("en");
 
                         // 取出每一个事件整体
@@ -72,7 +71,7 @@ public class EventJsonUDTF extends GenericUDTF {
         }
     }
 
-    //当没有记录处理的时候，该方法会被调用，用来清理代码或者产生额外的输出
+    //当没有记录处理的时候该方法会被调用，用来清理代码或者产生额外的输出
     @Override
     public void close() throws HiveException {
 
